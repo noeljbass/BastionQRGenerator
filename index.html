@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bastion Technology Services | Free QR Code Generator</title>
+
+        <meta name="description" content="Bastion Technology Solutions FREE QR Code Generator">
+        <meta name="keywords" content="tech solutions, web design, privacy protection, SEO, graphic design, device lockdown, family-owned business">
+        <meta name="author" content="Bastion Technology Solutions">
+        <meta name="robots" content="index, follow">
+        <meta property="og:title" content="Bastion Technology Solutions QR Code Generator">
+        <meta property="og:description" content="Bastion Technology Solutions FREE QR Code Generator">
+        <meta property="og:image" content="https://qrgenerator.bastiontech.org/BastionTechLogo.png" alt="Bastion Technology Solutions Banner">
+        <meta property="og:url" content="https://qrgenerator.bastiontech.org">
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Bastion Technology Solutions">
+        <meta name="twitter:description" content="PBastion Technology Solutions QR Code Generator">
+        <meta name="twitter:image" content="https://bastiontech.org/BastionBanner.png" alt="Bastion Technology Solutions Banner"> 
+        <link rel="icon" href="favicon.ico" type="image/png">
+        <link rel="shortcut icon" href="favicon.ico" type="img/x-icon">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="canonical" href="https://qrgenerator.bastiontech.org">
+    <script src="https://unpkg.com/qr-code-styling/lib/qr-code-styling.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #qrCode {
+            margin-top: 20px;
+            width: 50vw;
+            height: auto;
+        }
+        #downloadBtn {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #downloadBtn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h4>Brought to you by:</h4>
+    <a href="https://bastiontech.org"><img src="BastionTechLogo.png" width="200px;"></a>
+    <br><br><br>
+    <h1>Custom QR Code Generator</h1>
+    <label>
+        <input type="checkbox" id="logoToggle" />
+        Add Your Logo
+    </label>
+    <label>
+        <input type="checkbox" id="colorToggle" />
+        Edit Color
+    </label>
+    <label id="gradientToggleDisplay"  style="display: none;">
+        <input type="checkbox" id="gradientToggle" />
+        Gradient
+    </label><br><br>
+    <center><input type="file" id="logoInput" accept="image/*" style="display: none;" /></center>
+    <center><input type="color" id="colorInput" value="#000000" style="display: none;" /></center>
+    <center><input type="color" id="gradientColorInput" value="#ffffff" style="display: none;" /></center>
+    <br><br>
+    <input type="text" id="urlInput" placeholder="Enter URL" />
+    <button id="generateBtn">Generate QR Code</button>
+    <center><div id="qrCode" width="20%"></div></center>
+    <button id="downloadBtn">Download QR Code</button>
+    <script>
+        let qrCode;
+
+document.getElementById('generateBtn').addEventListener('click', function() {
+    let inputUrl = document.getElementById('urlInput').value.trim();
+    const logoInput = document.getElementById('logoInput').files[0];
+    const colorInput = document.getElementById('colorInput').value; 
+    const gradientColorInput = document.getElementById('gradientColorInput').value; 
+    const useCustomColor = document.getElementById('colorToggle').checked; 
+    const useGradient = document.getElementById('gradientToggle').checked; 
+
+    if (inputUrl) {
+        if (!inputUrl.startsWith('https://')) {
+            inputUrl = 'https://' + inputUrl;
+        }
+
+        const finalUrl = inputUrl;  
+
+        document.getElementById('qrCode').innerHTML = ''; 
+        document.getElementById('downloadBtn').style.display = 'none'; 
+
+        let dotOptions, squareOptions;
+        if (useGradient) {
+            dotOptions = {
+                type: "dots",
+                gradient: {
+                    type: "linear",
+                    rotation: 180, 
+                    colorStops: [
+                        { offset: 0, color: colorInput }, 
+                        { offset: 1, color: gradientColorInput }
+                    ]
+                }
+            };
+            squareOptions = {
+                type: "extra-rounded",
+                gradient: {
+                    type: "linear",
+                    rotation: 180,
+                    colorStops: [
+                        { offset: 0, color: colorInput }, 
+                        { offset: 1, color: gradientColorInput }
+                    ]
+                }
+            };
+        } else if (useCustomColor) {
+            dotOptions = { type: "dots", color: colorInput };
+            squareOptions = { type: "extra-rounded", color: colorInput };
+        } else {
+            dotOptions = { type: "dots", color: "#000" };
+            squareOptions = { type: "extra-rounded", color: "#000" };
+        }
+
+        qrCode = new QRCodeStyling({
+            width: 1000, 
+            height: 1000, 
+            type: "canvas",
+            data: finalUrl,  
+            dotsOptions: dotOptions,
+            backgroundOptions: {
+                color: "#ffffff"
+            },
+            cornersSquareOptions: squareOptions,
+            cornersDotOptions: dotOptions,
+            image: logoInput ? URL.createObjectURL(logoInput) : null, 
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 10, 
+                maxWidth: 80, 
+                maxHeight: 80 
+            }
+        });
+
+        qrCode.append(document.getElementById("qrCode"));
+        document.getElementById('downloadBtn').style.display = 'inline-block'; 
+
+        const qrCanvas = document.getElementById('qrCode').getElementsByTagName('canvas')[0];
+        if (qrCanvas) {
+            qrCanvas.style.width = '100%'; 
+            qrCanvas.style.height = 'auto'; 
+        }
+    } else {
+        alert('Please enter a URL.');
+    }
+});
+
+        
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+    if (qrCode) {
+        qrCode.download({ name: "qr-code", extension: "png" });
+    }
+});
+        
+document.getElementById('logoToggle').addEventListener('change', function() {
+    const logoInput = document.getElementById('logoInput');
+    if (this.checked) {
+        logoInput.style.display = 'block'; 
+    } else {
+        logoInput.style.display = 'none'; 
+        logoInput.value = ''; 
+        if (qrCode) {
+            qrCode.update({
+                image: null 
+            });
+            resizeQRCode(); 
+        }
+    }
+});
+
+function resizeQRCode() {
+    const qrCanvas = document.getElementById('qrCode').getElementsByTagName('canvas')[0];
+    if (qrCanvas) {
+        qrCanvas.style.width = '100%'; // Set canvas width to 50% of the container
+        qrCanvas.style.height = 'auto'; // Maintain aspect ratio
+    }
+}
+        
+        document.getElementById('colorToggle').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('colorInput').style.display = 'block'; 
+        document.getElementById('gradientToggleDisplay').style.display = 'block'; 
+        document.getElementById('gradientColorInput').style.display = 'none'; 
+        document.getElementById('gradientToggle').checked = false;
+    } else {
+        document.getElementById('colorInput').style.display = 'none'; 
+        document.getElementById('colorInput').value = '#000000'; 
+        document.getElementById('gradientToggleDisplay').style.display = 'none'; 
+        document.getElementById('gradientColorInput').style.display = 'none'; 
+        document.getElementById('gradientColorInput').value = '#ffffff'; 
+        document.getElementById('gradientToggle').checked = false;
+    }
+});
+        
+        document.getElementById('gradientToggle').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('gradientColorInput').style.display = 'block'; 
+            } else {
+                document.getElementById('gradientColorInput').style.display = 'none'; 
+                document.getElementById('gradientColorInput').value = '#ffffff'; 
+            }
+        });
+        </script>
+        
+</body>
+</html>
